@@ -1,6 +1,8 @@
-# ⚡ PIBOT Gameboost
+# ⚡ PIBOT Gameboost v2.0
 
 مسرّع ألعاب **حقيقي 100%** لهواتف أندرويد عبر **Termux بدون روت** + بوت ذكاء اصطناعي حقيقي عبر API.
+
+> 🆕 **v2.0**: مكتوب بالكامل بـ **C++17 + CMake** — برنامج أصلي (native) سريع وخفيف، مع محلل JSON مدمج وطبقة HTTP (libcurl أو curl تلقائياً). نسخة Bash موجودة كاحتياط.
 
 ```
    ██████╗ ██╗██████╗  ██████╗ ████████╗
@@ -18,8 +20,40 @@
 pkg update -y && pkg install -y git
 git clone https://github.com/YOUSSEFJEDIDI89/PIBOT-Gameboost
 cd PIBOT-Gameboost
-bash install.sh
+bash install.sh      # يبني نسخة C++ تلقائياً
 pibot
+```
+
+### 🔨 البناء اليدوي (C++ / CMake)
+
+```bash
+pkg install -y clang cmake make libcurl
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j$(nproc)
+cp build/pibot $PREFIX/bin/
+```
+
+أو بدون CMake:
+
+```bash
+clang++ -std=c++17 -O2 src/*.cpp -o $PREFIX/bin/pibot
+```
+
+### 🗂️ بنية المشروع
+
+```
+CMakeLists.txt        نظام البناء
+Makefile              بناء بديل بدون CMake
+src/
+ ├─ main.cpp          القائمة الرئيسية + أوامر CLI
+ ├─ json.hpp          محلل/مولّد JSON مدمج (بدون اعتماديات)
+ ├─ http.{hpp,cpp}    طبقة HTTP (libcurl أو curl تلقائياً)
+ ├─ priv.{hpp,cpp}    طبقة الصلاحيات (Shizuku/ADB/روت) + معالج الإعداد
+ ├─ boost.{hpp,cpp}   محرك التسريع السريع والعميق
+ ├─ game.{hpp,cpp}    Game Mode + قياس FPS + تردد الشاشة
+ ├─ bot.{hpp,cpp}     🤖 البوت الذكي (4 مزودين)
+ └─ util.{hpp,cpp}    أدوات + واجهة ملونة
+pibot.sh + lib/       نسخة Bash احتياطية
 ```
 
 ## 🚀 الميزات (كلها حقيقية وليست وهمية)
